@@ -664,7 +664,12 @@ export async function createSdkContext<
     previewStringRegex: options?.versioning?.previewStringRegex || tcgcContext.previewStringRegex,
   };
   sdkContext.sdkPackage = diagnostics.pipe(getSdkPackage(sdkContext));
+  sdkContext.experimental_sdkPackage = diagnostics.pipe(getSdkPackage(sdkContext)); //jowang
   for (const client of sdkContext.sdkPackage.clients) {
+    diagnostics.pipe(await handleClientExamples(sdkContext, client));
+  }
+  // jowang
+  for (const client of sdkContext.experimental_sdkPackage.clients) {
     diagnostics.pipe(await handleClientExamples(sdkContext, client));
   }
   sdkContext.diagnostics = sdkContext.diagnostics.concat(diagnostics.diagnostics);
